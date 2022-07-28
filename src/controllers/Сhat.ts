@@ -1,4 +1,4 @@
-import { RandomlyGeneratedMessageTypes } from '../utils/enums/message-types';
+import { ServerActionMessageTypes } from '../utils/enums/message-types';
 import getRandomEnumValue from '../utils/helpers/getRandomEnumValue';
 import getRandomNumber from '../utils/helpers/getRandomNumber';
 import { Messages } from '../utils/type/message';
@@ -15,40 +15,39 @@ class Chat {
   #numberOfMessages = 0;
 
   constructor(messages: Messages, users: Users) {
-    this.#messages = messages;
     this.#users = users;
-    this.#numberOfMessages = messages.length;
+    this.#messages = messages;
     this.#numberOfUsers = users.length;
+    this.#numberOfMessages = messages.length;
   }
 
   getRandomMessage = (): MessageData => {
-    const randomMessageType = getRandomEnumValue(RandomlyGeneratedMessageTypes);
+    const randomMessageType = getRandomEnumValue(ServerActionMessageTypes);
 
     return this.#generateRandomMessage(randomMessageType);
   };
 
-  #generateRandomMessage = (messageType: RandomlyGeneratedMessageTypes): MessageData => {
-    const message: MessageData = {
+  #generateRandomMessage = (messageType: ServerActionMessageTypes): MessageData => {
+    const messageData: MessageData = {
       type: messageType,
       data: '',
     };
 
     switch (messageType) {
-      case RandomlyGeneratedMessageTypes.CHAT_MESSAGE: {
-        const data = this.#messages[getRandomNumber(this.#numberOfMessages - 1)];
-        message.data = `${data.username}: ${data.message}`;
+      case ServerActionMessageTypes.CHAT_MESSAGE: {
+        const { username, message } = this.#messages[getRandomNumber(this.#numberOfMessages - 1)];
+        messageData.data = `${username}: ${message}`;
 
         break;
       }
-      case RandomlyGeneratedMessageTypes.MESSAGE: {
-        message.data = `User ${
-          this.#users[getRandomNumber(this.#numberOfUsers - 1)].username
-        } joined!!!`;
+      case ServerActionMessageTypes.MESSAGE: {
+        const { username } = this.#users[getRandomNumber(this.#numberOfUsers - 1)];
+        messageData.data = `User ${username} joined!!!`;
 
         break;
       }
-      case RandomlyGeneratedMessageTypes.TIME: {
-        message.data = new Date();
+      case ServerActionMessageTypes.TIME: {
+        messageData.data = new Date();
 
         break;
       }
@@ -56,7 +55,7 @@ class Chat {
         break;
     }
 
-    return message;
+    return messageData;
   };
 
   get users(): Users {

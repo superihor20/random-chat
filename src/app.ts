@@ -7,7 +7,7 @@ import { Server } from 'socket.io';
 import Chat from './controllers/Сhat';
 import { messages } from './utils/data/messages-data';
 import { users } from './utils/data/users-data';
-import { UserActionMessageTypes } from './utils/enums/message-types';
+import { ServerActionMessageTypes, UserActionMessageTypes } from './utils/enums/message-types';
 
 config();
 
@@ -39,6 +39,13 @@ io.on('connection', (socket) => {
 
     socket.emit(randomMessage.type, randomMessage);
   }, intervalTime);
+
+  socket.on(UserActionMessageTypes.MY_MESSAGE, (message) => {
+    socket.emit(ServerActionMessageTypes.CHAT_MESSAGE, {
+      type: ServerActionMessageTypes.CHAT_MESSAGE,
+      data: `Me: ${message}`,
+    });
+  });
 });
 
 server.listen(port, () => {
