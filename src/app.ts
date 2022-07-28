@@ -4,7 +4,8 @@ import { config } from 'dotenv';
 import express from 'express';
 import { Server } from 'socket.io';
 
-import { configurationDev } from './config/configuration.dev';
+import { configurationDev } from './config/config.dev';
+import { configSocket } from './config/config.socket';
 import LoggerService from './modules/Logger/Logger.service';
 import RandomMessages from './modules/RandomMessage/RandomMessage.service';
 import { messages } from './utils/data/messages-data';
@@ -19,12 +20,7 @@ const chat = new RandomMessages(messages, users, loggerService);
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {
-  path: '/',
-  cors: {
-    origin: configurationDev.clienUrl,
-  },
-});
+const io = new Server(server, configSocket);
 
 app.get('/', (_req, res) => {
   res.send("Chat ebat'!");
