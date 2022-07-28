@@ -11,10 +11,10 @@ import { ServerActionMessageTypes, UserActionMessageTypes } from './utils/enums/
 
 config();
 
-const chat = new Chat(messages, users);
+const intervalTime = 1000 * 2;
 const port = process.env.PORT || 3000;
 const clienUrl = process.env.CLIENT_URL || 'http://localhost:4200';
-const intervalTime = 1000 * 2;
+const chat = new Chat(messages, users);
 
 const app = express();
 const server = http.createServer(app);

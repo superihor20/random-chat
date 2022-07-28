@@ -5,7 +5,7 @@ import { Messages } from '../utils/type/message';
 import { MessageData } from '../utils/type/message-data';
 import { Users } from '../utils/type/user';
 
-class Chat {
+class RandomMessages {
   #users: Users;
 
   #messages: Messages;
@@ -75,4 +75,4 @@ class Chat {
   }
 }
 
-export default Chat;
+export default RandomMessages;
