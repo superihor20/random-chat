@@ -13,9 +13,9 @@ class RandomMessages {
 
   #numberOfUsers = 0;
 
-  logger: LoggerService;
-
   #numberOfMessages = 0;
+
+  logger: LoggerService;
 
   constructor(messages: Messages, users: Users, logger: LoggerService) {
     this.#users = users;
