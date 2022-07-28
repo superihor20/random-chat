@@ -4,6 +4,7 @@ import { config } from 'dotenv';
 import express from 'express';
 import { Server } from 'socket.io';
 
+import { configurationDev } from './config/configuration.dev';
 import LoggerService from './modules/Logger/Logger.service';
 import RandomMessages from './modules/RandomMessage/RandomMessage.service';
 import { messages } from './utils/data/messages-data';
@@ -13,8 +14,6 @@ import { ServerActionMessageTypes, UserActionMessageTypes } from './utils/enums/
 config();
 
 const intervalTime = 1000 * 2;
-const port = process.env.PORT || 3000;
-const clienUrl = process.env.CLIENT_URL || 'http://localhost:4200';
 const loggerService = new LoggerService();
 const chat = new RandomMessages(messages, users, loggerService);
 
@@ -23,7 +22,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   path: '/',
   cors: {
-    origin: clienUrl,
+    origin: configurationDev.clienUrl,
   },
 });
 
@@ -50,6 +49,6 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(port, () => {
-  loggerService.log(`Chat is running on port ${port}`);
+server.listen(configurationDev.port, () => {
+  loggerService.log(`Chat is running on port ${configurationDev.port}`);
 });
