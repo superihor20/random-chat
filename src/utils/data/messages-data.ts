@@ -1,4 +1,4 @@
-export const messages = [
+const messages = [
   {
     id: 0,
     username: 'seanjwk',
@@ -735,3 +735,5 @@ export const messages = [
     message: ' ⬆️ ⬇️💥♻️ LULW 󠀀',
   },
 ];
+
+export default messages;

@@ -1,12 +1,11 @@
-import express from 'express';
 import http from 'http';
+
 import { config } from 'dotenv';
+import express from 'express';
 import { Server } from 'socket.io';
-import { getRandomMesage } from './utils/helpers/getRandomMesage';
 
 config();
 
-getRandomMesage();
 const port = process.env.PORT || 3000;
 
 const app = express();
