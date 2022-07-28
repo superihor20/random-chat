@@ -1,9 +1,9 @@
-import MessageTypes from '../utils/enums/message-types';
-import getRandomEnum from '../utils/helpers/getRandomEnum';
-import getRandomNumber from '../utils/helpers/getRandomNumber';
-import { Messages } from '../utils/types/message';
-import MessageData from '../utils/types/message-data';
-import { Users } from '../utils/types/user';
+import { MessageTypes } from '@enums/message-types';
+import getRandomEnum from '@helpers/getRandomEnum';
+import getRandomNumber from '@helpers/getRandomNumber';
+import { Messages } from '@type/message';
+import { MessageData } from '@type/message-data';
+import { Users } from '@type/user';
 
 class Chat {
   users: Users;
