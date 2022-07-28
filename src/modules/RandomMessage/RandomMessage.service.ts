@@ -30,8 +30,6 @@ class RandomMessages {
   getRandomMessage = (): MessageData => {
     const randomMessageType = getRandomEnumValue(ServerActionMessageTypes);
 
-    this.logger.log('RandomMessages -> getRandomMessage -> randomMessageType', randomMessageType);
-
     return this.#generateRandomMessage(randomMessageType);
   };
 
@@ -62,8 +60,6 @@ class RandomMessages {
       default:
         break;
     }
-
-    this.logger.log('RandomMessages -> generateRandomMessage -> messageData', messageData);
 
     return messageData;
   };

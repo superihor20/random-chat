@@ -32,29 +32,21 @@ app.get('/', (_req, res) => {
 });
 
 io.on('connection', (socket) => {
-  loggerService.log(`Socket connected successfully`);
-
   socket.emit(UserActionMessageTypes.HELLO_ACTION, "I'm in da house");
 
   setInterval(() => {
     const randomMessage = chat.getRandomMessage();
 
-    loggerService.log(`Message send`, randomMessage);
-
     socket.emit(randomMessage.type, randomMessage);
   }, intervalTime);
 
   socket.on(UserActionMessageTypes.MY_MESSAGE, (message) => {
-    loggerService.log(`Message received`, message);
-
     const messageData = {
       type: ServerActionMessageTypes.CHAT_MESSAGE,
       data: `Me: ${message}`,
     };
 
     socket.emit(ServerActionMessageTypes.CHAT_MESSAGE, messageData);
-
-    loggerService.log(`Message from user send`, messageData);
   });
 });
 
