@@ -4,16 +4,24 @@ import { config } from 'dotenv';
 import express from 'express';
 import { Server } from 'socket.io';
 
+import Chat from './controllers/Сhat';
+import { messages } from './utils/data/messages-data';
+import { users } from './utils/data/users-data';
+import { UserActionMessageTypes } from './utils/enums/message-types';
+
 config();
 
+const chat = new Chat(messages, users);
 const port = process.env.PORT || 3000;
+const clienUrl = process.env.CLIENT_URL || 'http://localhost:4200';
+const intervalTime = 1000 * 2;
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   path: '/',
   cors: {
-    origin: 'http://localhost:4200',
+    origin: clienUrl,
   },
 });
 
@@ -22,15 +30,15 @@ app.get('/', (_req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log('Successful connection');
 
-  socket.on('hello', (msg) => {
-    console.log(msg);
-  });
+  socket.emit(UserActionMessageTypes.HELLO_ACTION, "I'm in da house");
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
+  setInterval(() => {
+    const randomMessage = chat.getRandomMessage();
+
+    socket.emit(randomMessage.type, randomMessage);
+  }, intervalTime);
 });
 
 server.listen(port, () => {
