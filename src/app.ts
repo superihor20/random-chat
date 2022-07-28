@@ -1,8 +1,8 @@
-import http from 'http';
+import { createServer } from 'http';
 
 import { config } from 'dotenv';
 import express from 'express';
-import { Server } from 'socket.io';
+import { Server as SocketServer } from 'socket.io';
 
 import { configDev } from './config/config.dev';
 import { configSocket } from './config/config.socket';
@@ -14,25 +14,25 @@ import { ServerActionMessageTypes, UserActionMessageTypes } from './utils/enums/
 
 config();
 
-const intervalTime = 1000 * 2;
+const intervalTime = 1000 * 1;
 const loggerService = new LoggerService();
 const chat = new RandomMessages(messages, users, loggerService);
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, configSocket);
+const server = createServer(app);
+const io = new SocketServer(server, configSocket);
 
 app.get('/', (_req, res) => {
   res.send("Chat ebat'!");
 });
 
 io.on('connection', (socket) => {
-  socket.emit(UserActionMessageTypes.HELLO_ACTION, "I'm in da house");
+  io.emit(UserActionMessageTypes.HELLO_ACTION, "I'm in da house");
 
   setInterval(() => {
     const randomMessage = chat.getRandomMessage();
 
-    socket.emit(randomMessage.type, randomMessage);
+    io.emit(randomMessage.type, randomMessage);
   }, intervalTime);
 
   socket.on(UserActionMessageTypes.MY_MESSAGE, (message) => {
@@ -41,7 +41,7 @@ io.on('connection', (socket) => {
       data: `Me: ${message}`,
     };
 
-    socket.emit(ServerActionMessageTypes.CHAT_MESSAGE, messageData);
+    io.emit(ServerActionMessageTypes.CHAT_MESSAGE, messageData);
   });
 });
 
