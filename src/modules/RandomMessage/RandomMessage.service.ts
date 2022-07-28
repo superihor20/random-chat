@@ -4,6 +4,7 @@ import getRandomNumber from '../../utils/helpers/getRandomNumber';
 import { Messages } from '../../utils/type/message';
 import { MessageData } from '../../utils/type/message-data';
 import { Users } from '../../utils/type/user';
+import LoggerService from '../Logger/Logger.service';
 
 class RandomMessages {
   #users: Users;
@@ -12,17 +13,24 @@ class RandomMessages {
 
   #numberOfUsers = 0;
 
+  logger: LoggerService;
+
   #numberOfMessages = 0;
 
-  constructor(messages: Messages, users: Users) {
+  constructor(messages: Messages, users: Users, logger: LoggerService) {
     this.#users = users;
     this.#messages = messages;
     this.#numberOfUsers = users.length;
     this.#numberOfMessages = messages.length;
+    this.logger = logger;
+
+    this.logger.log(`RandomMessages Service was initialize`);
   }
 
   getRandomMessage = (): MessageData => {
     const randomMessageType = getRandomEnumValue(ServerActionMessageTypes);
+
+    this.logger.log('RandomMessages -> getRandomMessage -> randomMessageType', randomMessageType);
 
     return this.#generateRandomMessage(randomMessageType);
   };
@@ -54,6 +62,8 @@ class RandomMessages {
       default:
         break;
     }
+
+    this.logger.log('RandomMessages -> generateRandomMessage -> messageData', messageData);
 
     return messageData;
   };
