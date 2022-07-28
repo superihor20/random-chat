@@ -1,9 +1,9 @@
-import { ServerActionMessageTypes } from '../utils/enums/message-types';
-import getRandomEnumValue from '../utils/helpers/getRandomEnumValue';
-import getRandomNumber from '../utils/helpers/getRandomNumber';
-import { Messages } from '../utils/type/message';
-import { MessageData } from '../utils/type/message-data';
-import { Users } from '../utils/type/user';
+import { ServerActionMessageTypes } from '../../utils/enums/message-types';
+import getRandomEnumValue from '../../utils/helpers/getRandomEnumValue';
+import getRandomNumber from '../../utils/helpers/getRandomNumber';
+import { Messages } from '../../utils/type/message';
+import { MessageData } from '../../utils/type/message-data';
+import { Users } from '../../utils/type/user';
 
 class RandomMessages {
   #users: Users;
