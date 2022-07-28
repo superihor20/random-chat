@@ -4,7 +4,7 @@ import { config } from 'dotenv';
 import express from 'express';
 import { Server } from 'socket.io';
 
-import { configurationDev } from './config/config.dev';
+import { configDev } from './config/config.dev';
 import { configSocket } from './config/config.socket';
 import LoggerService from './modules/Logger/Logger.service';
 import RandomMessages from './modules/RandomMessage/RandomMessage.service';
@@ -45,6 +45,6 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(configurationDev.port, () => {
-  loggerService.log(`Chat is running on port ${configurationDev.port}`);
+server.listen(configDev.port, () => {
+  loggerService.log(`Chat is running on port ${configDev.port}`);
 });
