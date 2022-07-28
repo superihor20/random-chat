@@ -1,5 +1,5 @@
 import { RandomlyGeneratedMessageTypes } from '../utils/enums/message-types';
-import getRandomEnum from '../utils/helpers/getRandomEnum';
+import getRandomEnumValue from '../utils/helpers/getRandomEnumValue';
 import getRandomNumber from '../utils/helpers/getRandomNumber';
 import { Messages } from '../utils/type/message';
 import { MessageData } from '../utils/type/message-data';
@@ -22,7 +22,7 @@ class Chat {
   }
 
   getRandomMessage = (): MessageData => {
-    const randomMessageType = getRandomEnum(RandomlyGeneratedMessageTypes);
+    const randomMessageType = getRandomEnumValue(RandomlyGeneratedMessageTypes);
 
     return this.#generateRandomMessage(randomMessageType);
   };
