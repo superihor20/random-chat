@@ -1,6 +1,8 @@
+import { User } from './user';
+
 export type Message = {
   id: number;
-  username: string;
+  user: User;
   message: string;
 };
 
