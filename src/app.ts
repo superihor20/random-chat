@@ -11,6 +11,7 @@ import RandomMessages from './modules/RandomMessage/RandomMessage.service';
 import { messages } from './utils/data/messages-data';
 import { users } from './utils/data/users-data';
 import { ServerActionMessageTypes, UserActionMessageTypes } from './utils/enums/message-types';
+import { MessageData } from './utils/type/message-data';
 
 config();
 
@@ -36,7 +37,7 @@ io.on('connection', (socket) => {
   }, intervalTime);
 
   socket.on(UserActionMessageTypes.MY_MESSAGE, (message) => {
-    const messageData = {
+    const messageData: MessageData = {
       type: ServerActionMessageTypes.CHAT_MESSAGE,
       data: `Me: ${message}`,
     };
