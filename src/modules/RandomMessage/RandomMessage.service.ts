@@ -41,8 +41,7 @@ class RandomMessages {
 
     switch (messageType) {
       case ServerActionMessageTypes.CHAT_MESSAGE: {
-        const { username, message } = this.#messages[getRandomNumber(this.#numberOfMessages - 1)];
-        messageData.data = `${username}: ${message}`;
+        messageData.data = this.#messages[getRandomNumber(this.#numberOfMessages - 1)];
 
         break;
       }
