@@ -12,7 +12,7 @@ import { messages } from './utils/data/messages';
 import { users } from './utils/data/users';
 import { ServerActionMessageTypes, UserActionMessageTypes } from './utils/enums/message-types';
 import getRandomNumber from './utils/helpers/getRandomNumber';
-import { MessageData } from './utils/type/message-data';
+import { Message } from './utils/type/message';
 
 config();
 
@@ -40,16 +40,13 @@ io.on('connection', (socket) => {
   }, intervalTime);
 
   socket.on(UserActionMessageTypes.MY_MESSAGE, (message) => {
-    const messageData: MessageData = {
-      type: ServerActionMessageTypes.CHAT_MESSAGE,
-      data: {
-        id: myId,
-        message,
-        user: {
-          id: new Date().getTime(), // TODO: i eto toje potom ybery
-          username: 'Me',
-          color: myColor,
-        },
+    const messageData: Message = {
+      id: myId,
+      message,
+      user: {
+        id: new Date().getTime(), // TODO: i eto toje potom ybery
+        username: 'Me',
+        color: myColor,
       },
     };
 
