@@ -1,6 +1,6 @@
 import { Logger } from 'tslog';
 
-class LoggerService {
+export class LoggerService {
   #logger: Logger;
 
   constructor() {
@@ -26,5 +26,3 @@ class LoggerService {
     this.#logger.error(...args);
   }
 }
-
-export default LoggerService;

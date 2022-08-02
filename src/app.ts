@@ -6,12 +6,12 @@ import { Server as SocketServer } from 'socket.io';
 
 import { configDev } from './configs/config.dev';
 import { configSocket } from './configs/config.socket';
-import LoggerService from './modules/Logger/Logger.service';
-import RandomMessages from './modules/RandomMessage/RandomMessage.service';
+import { LoggerService } from './modules/Logger/Logger.service';
+import { RandomMessages } from './modules/RandomMessage/RandomMessage.service';
 import { messages } from './utils/data/messages';
 import { users } from './utils/data/users';
 import { ServerActionMessageTypes, UserActionMessageTypes } from './utils/enums/message-types';
-import getRandomNumber from './utils/helpers/getRandomNumber';
+import { getRandomNumber } from './utils/helpers/getRandomNumber';
 import { Message } from './utils/type/message';
 
 config();
