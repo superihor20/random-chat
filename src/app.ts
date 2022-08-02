@@ -34,9 +34,9 @@ io.on('connection', (socket) => {
   io.emit(UserActionMessageTypes.HELLO_ACTION, "I'm in da house");
 
   setInterval(() => {
-    const randomMessage = chat.getRandomMessage();
+    const { type, data } = chat.getRandomMessage();
 
-    io.emit(randomMessage.type, randomMessage);
+    io.emit(type, data);
   }, intervalTime);
 
   socket.on(UserActionMessageTypes.MY_MESSAGE, (message) => {
