@@ -4,8 +4,8 @@ import { config } from 'dotenv';
 import express from 'express';
 import { Server as SocketServer } from 'socket.io';
 
-import { configDev } from './config/config.dev';
-import { configSocket } from './config/config.socket';
+import { configDev } from './configs/config.dev';
+import { configSocket } from './configs/config.socket';
 import LoggerService from './modules/Logger/Logger.service';
 import RandomMessages from './modules/RandomMessage/RandomMessage.service';
 import { messages } from './utils/data/messages-data';
