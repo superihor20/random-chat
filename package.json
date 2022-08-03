@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon ./src/app.ts"
+    "dev": "nodemon ./src/app.ts",
+    "migration:run": "npx typeorm-ts-node-esm migration:run -d ./src/configs/config.db.ts"
   },
   "author": "Ihor Naidonov",
   "license": "ISC",
