@@ -1,12 +1,12 @@
 import { ServerActionMessageTypes } from '../../utils/enums/message-types';
-import getRandomEnumValue from '../../utils/helpers/getRandomEnumValue';
-import getRandomNumber from '../../utils/helpers/getRandomNumber';
+import { getRandomEnumValue } from '../../utils/helpers/getRandomEnumValue';
+import { getRandomNumber } from '../../utils/helpers/getRandomNumber';
 import { Messages } from '../../utils/type/message';
 import { MessageData } from '../../utils/type/message-data';
 import { Users } from '../../utils/type/user';
-import LoggerService from '../Logger/Logger.service';
+import { LoggerService } from '../Logger/Logger.service';
 
-class RandomMessages {
+export class RandomMessages {
   #users: Users;
 
   #messages: Messages;
@@ -79,5 +79,3 @@ class RandomMessages {
     return this.#numberOfMessages;
   }
 }
-
-export default RandomMessages;
