@@ -39,9 +39,7 @@ app.get('/', (_req, res) => {
   res.send("Chat ebat'!");
 });
 
-app.post('/auth/registration', auth.signUp);
-
-app.use(errorService.catch);
+app.post('/auth/sign-up', auth.signUp);
 
 io.on('connection', (socket) => {
   io.emit(UserActionMessageTypes.HELLO_ACTION, "I'm in da house");
@@ -66,6 +64,8 @@ io.on('connection', (socket) => {
     io.emit(ServerActionMessageTypes.CHAT_MESSAGE, messageData);
   });
 });
+
+app.use(errorService.catch);
 
 server.listen(configDev.port, () => {
   loggerService.log(`Chat is running on port ${configDev.port}`);

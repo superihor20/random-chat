@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { LoggerService } from '../Logger/Logger.service';
 
@@ -14,15 +14,18 @@ export class ErrorService implements ErrorInterface {
     this.logger.log(`ErrorService Service was initialize`);
   }
 
-  catch = (err: Error | HttpError, _req: Request, res: Response): void => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  catch = (err: Error | HttpError, _req: Request, res: Response, _next: NextFunction): void => {
     if (err instanceof HttpError) {
       this.logger.error(
         `${err.context ? `[${err.context}] ` : ''}Error ${err.statusCode}: ${err.message}`
       );
+
       res.status(err.statusCode).send({ err: err.message });
-    } else {
-      this.logger.error(`${err.message}`);
-      res.status(500).send({ err: err.message });
+      return;
     }
+
+    this.logger.error(`${err.message}`);
+    res.status(500).send({ err: err.message });
   };
 }
