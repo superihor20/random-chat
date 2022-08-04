@@ -1,8 +1,12 @@
+import { join } from 'path';
+
 import { DataSource } from 'typeorm';
 
-import { User } from '../entities/User';
-
 import { configDev } from './config.dev';
+
+const absPathToSrc = join(__dirname, '../');
+const entities = join(absPathToSrc, '/entities/*.ts');
+const migrations = join(absPathToSrc, '/migrations/*.ts');
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -13,6 +17,6 @@ export const AppDataSource = new DataSource({
   database: configDev.dbName,
   logging: true,
   synchronize: false,
-  entities: [User],
-  migrations: ['src/migrations/*.ts'],
+  entities: [entities],
+  migrations: [migrations],
 });
