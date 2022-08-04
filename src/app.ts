@@ -12,7 +12,7 @@ import { messages } from './utils/data/messages';
 import { users } from './utils/data/users';
 import { ServerActionMessageTypes, UserActionMessageTypes } from './utils/enums/message-types';
 import { getRandomNumber } from './utils/helpers/getRandomNumber';
-import { Message } from './utils/type/message';
+import { Message } from './utils/types/message';
 
 config();
 

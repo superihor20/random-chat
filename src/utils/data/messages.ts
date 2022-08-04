@@ -1,4 +1,4 @@
-import { Messages } from '../type/message';
+import { Messages } from '../types/message';
 
 export const messages: Messages = [
   {
