@@ -71,7 +71,7 @@ export class AuthService {
       throw new HttpError(
         403,
         result.error.issues.map((issue) => issue.message).join(', '),
-        'Sign Up'
+        'Sign In'
       );
     }
 
@@ -79,6 +79,12 @@ export class AuthService {
 
     if (!user) {
       throw new HttpError(404, 'User not found', 'Sign In');
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(body.password, user.password);
+
+    if (!isPasswordCorrect) {
+      throw new HttpError(403, 'Incorect credentials, please try again', 'Sign In');
     }
 
     const accessToken = sign(
