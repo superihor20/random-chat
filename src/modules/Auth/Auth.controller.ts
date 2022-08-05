@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { HttpError } from '../Error/HttpError.class';
-
 import { AuthService } from './Auth.service';
 
 export class AuthController {
@@ -11,15 +9,13 @@ export class AuthController {
     this.authService = authService;
   }
 
-  signUp = (req: Request, res: Response, next: NextFunction): void => {
-    const result = this.authService.validateSignUp(req.body);
+  signUp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      await this.authService.signUp(req.body);
 
-    if (!result.success) {
-      next(
-        new HttpError(403, result.error.issues.map((issue) => issue.message).join(', '), 'Sign Up')
-      );
+      res.status(201).end('opa nihyya');
+    } catch (e) {
+      next(e);
     }
-
-    res.end();
   };
 }

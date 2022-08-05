@@ -7,6 +7,6 @@ export type User = {
 export type Users = User[];
 
 export type SignUpBody = {
-  login: string;
+  email: string;
   password: string;
 };
