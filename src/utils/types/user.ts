@@ -6,12 +6,12 @@ export type User = {
 
 export type Users = User[];
 
-export type SignUpBody = {
+export type AuthBody = {
   email: string;
   password: string;
 };
 
-export type SignUpResponse = {
+export type AuthResponse = {
   accessToken: string;
   refreshToken: string;
 };

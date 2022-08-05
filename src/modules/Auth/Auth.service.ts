@@ -4,8 +4,8 @@ import { SafeParseReturnType } from 'zod';
 
 import { configDev } from '../../configs/config.dev';
 import { User } from '../../entities/User';
-import { signUpSchema } from '../../utils/schemas/signUp.schema';
-import { SignUpBody, SignUpResponse } from '../../utils/types/user';
+import { authSchema } from '../../utils/schemas/signUp.schema';
+import { AuthBody, AuthResponse } from '../../utils/types/user';
 import { HttpError } from '../Error/HttpError.class';
 import { UserService } from '../User/User.service';
 
@@ -20,11 +20,11 @@ export class AuthService {
     this.#userService = userService;
   }
 
-  validateSignUp = (body: SignUpBody): SafeParseReturnType<SignUpBody, SignUpBody> => {
-    return signUpSchema.safeParse(body);
+  validateSignUp = (body: AuthBody): SafeParseReturnType<AuthBody, AuthBody> => {
+    return authSchema.safeParse(body);
   };
 
-  signUp = async (body: SignUpBody): Promise<SignUpResponse> => {
+  signUp = async (body: AuthBody): Promise<AuthResponse> => {
     const result = this.validateSignUp(body);
 
     if (!result.success) {
@@ -50,6 +50,47 @@ export class AuthService {
       {
         id: newUser.id,
         email: newUser.email,
+      },
+      configDev.secret,
+      {
+        expiresIn: this.#tokenExpiresIn,
+      }
+    );
+    const refreshToken = await bcrypt.hash(new Date().toUTCString(), this.#saltRounds);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  };
+
+  signIn = async (body: AuthBody): Promise<AuthResponse> => {
+    const result = this.validateSignUp(body);
+
+    if (!result.success) {
+      throw new HttpError(
+        403,
+        result.error.issues.map((issue) => issue.message).join(', '),
+        'Sign In'
+      );
+    }
+
+    const user = await this.#userService.getUser({ email: body.email });
+
+    if (!user) {
+      throw new HttpError(404, 'User not found', 'Sign In');
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(body.password, user.password);
+
+    if (!isPasswordCorrect) {
+      throw new HttpError(403, 'Incorect credentials, please try again', 'Sign In');
+    }
+
+    const accessToken = sign(
+      {
+        id: user.id,
+        email: user.email,
       },
       configDev.secret,
       {
