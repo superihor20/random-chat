@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon ./src/app.ts",
-    "migration:run": "npx typeorm-ts-node-esm migration:run -d ./src/configs/config.db.ts"
+    "migration:run": "npx typeorm-ts-node-esm migration:run -d ./src/configs/config.db.ts",
+    "docker:run": "docker-compose up -d"
   },
   "author": "Ihor Naidonov",
   "license": "ISC",
