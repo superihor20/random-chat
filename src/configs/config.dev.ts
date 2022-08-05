@@ -7,4 +7,5 @@ export const configDev = {
   dbPassword: process.env.DB_PASSWORD || '123123123',
   dbName: process.env.DB_NAME || 'chat',
   secret: process.env.SECRET || 'secret',
+  tockenExpiresIn: 1000 * 60 * 15, // 15 minutes
 };

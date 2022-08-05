@@ -1,11 +1,11 @@
 import bcrypt from 'bcrypt';
-import { sign } from 'jsonwebtoken';
 import { SafeParseReturnType } from 'zod';
 
-import { configDev } from '../../configs/config.dev';
 import { User } from '../../entities/User';
-import { authSchema } from '../../utils/schemas/signUp.schema';
-import { AuthBody, AuthResponse } from '../../utils/types/user';
+import { generateAccessToken } from '../../utils/helpers/generateAccessToken';
+import { generateRefreshToken } from '../../utils/helpers/generateRefreshToken';
+import { authSchema } from '../../utils/schemas/auth.schema';
+import { AuthBody, AuthResponse } from '../../utils/types/auth';
 import { HttpError } from '../Error/HttpError.class';
 import { UserService } from '../User/User.service';
 
@@ -14,18 +14,16 @@ export class AuthService {
 
   #saltRounds = 10;
 
-  #tokenExpiresIn = 1000 * 60 * 15;
-
   constructor(userService: UserService) {
     this.#userService = userService;
   }
 
-  validateSignUp = (body: AuthBody): SafeParseReturnType<AuthBody, AuthBody> => {
+  validateAuthBody = (body: AuthBody): SafeParseReturnType<AuthBody, AuthBody> => {
     return authSchema.safeParse(body);
   };
 
   signUp = async (body: AuthBody): Promise<AuthResponse> => {
-    const result = this.validateSignUp(body);
+    const result = this.validateAuthBody(body);
 
     if (!result.success) {
       throw new HttpError(
@@ -46,17 +44,8 @@ export class AuthService {
     user.password = await bcrypt.hash(body.password, this.#saltRounds);
 
     const newUser = await this.#userService.saveUser(user);
-    const accessToken = sign(
-      {
-        id: newUser.id,
-        email: newUser.email,
-      },
-      configDev.secret,
-      {
-        expiresIn: this.#tokenExpiresIn,
-      }
-    );
-    const refreshToken = await bcrypt.hash(new Date().toUTCString(), this.#saltRounds);
+    const accessToken = generateAccessToken({ id: newUser.id, email: newUser.email });
+    const refreshToken = await generateRefreshToken(this.#saltRounds);
 
     return {
       accessToken,
@@ -65,7 +54,7 @@ export class AuthService {
   };
 
   signIn = async (body: AuthBody): Promise<AuthResponse> => {
-    const result = this.validateSignUp(body);
+    const result = this.validateAuthBody(body);
 
     if (!result.success) {
       throw new HttpError(
@@ -87,17 +76,8 @@ export class AuthService {
       throw new HttpError(403, 'Incorect credentials, please try again', 'Sign In');
     }
 
-    const accessToken = sign(
-      {
-        id: user.id,
-        email: user.email,
-      },
-      configDev.secret,
-      {
-        expiresIn: this.#tokenExpiresIn,
-      }
-    );
-    const refreshToken = await bcrypt.hash(new Date().toUTCString(), this.#saltRounds);
+    const accessToken = generateAccessToken({ id: user.id, email: user.email });
+    const refreshToken = await generateRefreshToken(this.#saltRounds);
 
     return {
       accessToken,
