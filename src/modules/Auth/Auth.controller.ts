@@ -18,4 +18,14 @@ export class AuthController {
       next(e);
     }
   };
+
+  signIn = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const tokens = await this.#authService.signIn(req.body);
+
+      res.status(200).json(tokens);
+    } catch (e) {
+      next(e);
+    }
+  };
 }

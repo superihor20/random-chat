@@ -11,5 +11,6 @@ const authService = new AuthService(userService);
 const authController = new AuthController(authService);
 
 authRouter.post('/sign-up', authController.signUp);
+authRouter.post('/sign-in', authController.signIn);
 
 export default authRouter;
