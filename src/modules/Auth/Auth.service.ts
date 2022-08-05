@@ -33,7 +33,7 @@ export class AuthService {
 
     const isUserExist = await this.userService.getUser({ email: body.email });
 
-    if (!isUserExist) {
+    if (isUserExist) {
       throw new HttpError(403, 'User with this email already exist', 'Sign Up');
     }
 
