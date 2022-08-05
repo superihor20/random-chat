@@ -7,6 +7,7 @@ export class User {
 
   @Column({
     length: 100,
+    nullable: true,
   })
   username: string;
 
@@ -18,9 +19,9 @@ export class User {
   @Column({ length: 100 })
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   avatar: string;
 
-  @Column()
+  @Column({ nullable: true })
   background: string;
 }

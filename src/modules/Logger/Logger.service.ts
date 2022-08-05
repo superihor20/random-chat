@@ -14,15 +14,15 @@ export class LoggerService {
     this.log('LoggerService Service was initialize');
   }
 
-  log(...args: unknown[]): void {
+  log = (...args: unknown[]): void => {
     this.#logger.info(...args);
-  }
+  };
 
-  warn(...args: unknown[]): void {
+  warn = (...args: unknown[]): void => {
     this.#logger.warn(...args);
-  }
+  };
 
-  error(...args: unknown[]): void {
+  error = (...args: unknown[]): void => {
     this.#logger.error(...args);
-  }
+  };
 }
