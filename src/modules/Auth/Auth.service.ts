@@ -10,14 +10,14 @@ import { HttpError } from '../Error/HttpError.class';
 import { UserService } from '../User/User.service';
 
 export class AuthService {
-  private userService: UserService;
+  #userService: UserService;
 
-  private saltRounds = 10;
+  #saltRounds = 10;
 
-  private tokenExpiresIn = 1000 * 60 * 15;
+  #tokenExpiresIn = 1000 * 60 * 15;
 
   constructor(userService: UserService) {
-    this.userService = userService;
+    this.#userService = userService;
   }
 
   validateSignUp = (body: SignUpBody): SafeParseReturnType<SignUpBody, SignUpBody> => {
@@ -35,7 +35,7 @@ export class AuthService {
       );
     }
 
-    const isUserExist = await this.userService.getUser({ email: body.email });
+    const isUserExist = await this.#userService.getUser({ email: body.email });
 
     if (isUserExist) {
       throw new HttpError(403, 'User with this email already exist', 'Sign Up');
@@ -43,9 +43,9 @@ export class AuthService {
 
     const user = new User();
     user.email = body.email;
-    user.password = await bcrypt.hash(body.password, this.saltRounds);
+    user.password = await bcrypt.hash(body.password, this.#saltRounds);
 
-    const newUser = await this.userService.saveUser(user);
+    const newUser = await this.#userService.saveUser(user);
     const accessToken = sign(
       {
         id: newUser.id,
@@ -53,10 +53,10 @@ export class AuthService {
       },
       configDev.secret,
       {
-        expiresIn: this.tokenExpiresIn,
+        expiresIn: this.#tokenExpiresIn,
       }
     );
-    const refreshToken = await bcrypt.hash(new Date().toUTCString(), this.saltRounds);
+    const refreshToken = await bcrypt.hash(new Date().toUTCString(), this.#saltRounds);
 
     return {
       accessToken,

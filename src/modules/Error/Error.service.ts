@@ -6,18 +6,18 @@ import { ErrorInterface } from './Error.interface';
 import { HttpError } from './HttpError.class';
 
 export class ErrorService implements ErrorInterface {
-  private logger: LoggerService;
+  #logger: LoggerService;
 
   constructor(logger: LoggerService) {
-    this.logger = logger;
+    this.#logger = logger;
 
-    this.logger.log(`ErrorService Service was initialize`);
+    this.#logger.log(`ErrorService Service was initialize`);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   catch = (err: Error | HttpError, _req: Request, res: Response, _next: NextFunction): void => {
     if (err instanceof HttpError) {
-      this.logger.error(
+      this.#logger.error(
         `${err.context ? `[${err.context}] ` : ''}Error ${err.statusCode}: ${err.message}`
       );
 
@@ -25,7 +25,7 @@ export class ErrorService implements ErrorInterface {
       return;
     }
 
-    this.logger.error(`${err.message}`);
+    this.#logger.error(`${err.message}`);
     res.status(500).send({ err: err.message });
   };
 }
