@@ -10,3 +10,8 @@ export type SignUpBody = {
   email: string;
   password: string;
 };
+
+export type SignUpResponse = {
+  accessToken: string;
+  refreshToken: string;
+};

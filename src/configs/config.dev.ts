@@ -6,4 +6,5 @@ export const configDev = {
   dbUsername: process.env.DB_USERNAME || 'user',
   dbPassword: process.env.DB_PASSWORD || '123123123',
   dbName: process.env.DB_NAME || 'chat',
+  secret: process.env.SECRET || 'secret',
 };
