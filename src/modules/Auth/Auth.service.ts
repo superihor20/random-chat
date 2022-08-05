@@ -4,8 +4,8 @@ import { SafeParseReturnType } from 'zod';
 import { User } from '../../entities/User';
 import { generateAccessToken } from '../../utils/helpers/generateAccessToken';
 import { generateRefreshToken } from '../../utils/helpers/generateRefreshToken';
-import { authSchema } from '../../utils/schemas/signUp.schema';
-import { AuthBody, AuthResponse } from '../../utils/types/user';
+import { authSchema } from '../../utils/schemas/auth.schema';
+import { AuthBody, AuthResponse } from '../../utils/types/auth';
 import { HttpError } from '../Error/HttpError.class';
 import { UserService } from '../User/User.service';
 
@@ -18,12 +18,12 @@ export class AuthService {
     this.#userService = userService;
   }
 
-  validateSignUp = (body: AuthBody): SafeParseReturnType<AuthBody, AuthBody> => {
+  validateAuthBody = (body: AuthBody): SafeParseReturnType<AuthBody, AuthBody> => {
     return authSchema.safeParse(body);
   };
 
   signUp = async (body: AuthBody): Promise<AuthResponse> => {
-    const result = this.validateSignUp(body);
+    const result = this.validateAuthBody(body);
 
     if (!result.success) {
       throw new HttpError(
@@ -54,7 +54,7 @@ export class AuthService {
   };
 
   signIn = async (body: AuthBody): Promise<AuthResponse> => {
-    const result = this.validateSignUp(body);
+    const result = this.validateAuthBody(body);
 
     if (!result.success) {
       throw new HttpError(
