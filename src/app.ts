@@ -3,6 +3,9 @@ import { createServer } from 'http';
 import bodyParser from 'body-parser';
 import { config } from 'dotenv';
 import express from 'express';
+import swaggerUi from 'swagger-ui-express';
+
+import swaggerDocument from '../swagger.json';
 
 import { AppDataSource } from './configs/config.db';
 import { configDev } from './configs/config.dev';
@@ -33,6 +36,8 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/auth', authRouter);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(errorService.catch);
 
