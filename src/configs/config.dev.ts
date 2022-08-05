@@ -1,5 +1,5 @@
 export const configDev = {
-  port: process.env.PORT || 8080,
+  port: process.env.PORT || 8000,
   clienUrl: process.env.CLIENT_URL || 'http://localhost:3000',
   dbHost: process.env.DB_HOST || 'localhost',
   dbPort: process.env.DB_PORT && !Number.isNaN(+process.env.DB_PORT) ? +process.env.DB_PORT : 5432,
