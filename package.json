@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon ./src/app.ts",
+    "dev": "nodemon ./src/index.ts",
     "migration:run": "npx typeorm-ts-node-esm migration:run -d ./src/configs/config.db.ts",
     "docker:run": "docker-compose up -d"
   },
