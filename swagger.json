@@ -61,6 +61,34 @@
           "404": { "description": "User not Found" }
         }
       }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Refresh access token with refresh token",
+        "description": "Refresh access token with refresh token",
+        "operationId": "refresh",
+        "requestBody": {
+          "description": "Refresh access token with refresh token",
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/RefreshBody" } },
+            "application/xml": { "schema": { "$ref": "#/components/schemas/RefreshBody" } },
+            "application/x-www-form-urlencoded": {
+              "schema": { "$ref": "#/components/schemas/RefreshBody" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "New pair of tokens successfully created",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/RefreshBody" } }
+            }
+          },
+          "403": { "description": "Incorect Data" }
+        }
+      }
     }
   },
   "components": {
@@ -70,6 +98,12 @@
         "properties": {
           "email": { "type": "string", "example": "email@gmail.com" },
           "password": { "minLength": 8, "type": "string", "example": "12345678" }
+        }
+      },
+      "RefreshBody": {
+        "type": "object",
+        "properties": {
+          "refreshToken": { "type": "string", "example": "your jwt token" }
         }
       }
     }

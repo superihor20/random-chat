@@ -15,6 +15,7 @@ export class AuthController extends RouteController {
     this.bindRouter([
       { path: '/sign-up', method: 'post', func: this.signUp },
       { path: '/sign-in', method: 'get', func: this.signIn },
+      { path: '/refresh', method: 'post', func: this.refresh },
     ]);
   }
 
@@ -43,6 +44,16 @@ export class AuthController extends RouteController {
       req.user = this.#authService.guard(req.headers.authorization);
 
       next();
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  refresh = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const newPair = await this.#authService.refresh(req.body);
+
+      res.status(201).json(newPair);
     } catch (e) {
       next(e);
     }

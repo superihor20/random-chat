@@ -4,7 +4,7 @@ import { SafeParseReturnType } from 'zod';
 
 import { User } from '../../entities/User';
 import { authSchema } from '../../utils/schemas/auth.schema';
-import { AuthBody, AuthResponse } from '../../utils/types/auth';
+import { AuthBody, AuthResponse, RefreshBody } from '../../utils/types/auth';
 import { HttpError } from '../Error/HttpError.class';
 import { TokenService } from '../Token/Token.service';
 import { UserService } from '../User/User.service';
@@ -83,7 +83,7 @@ export class AuthService {
     );
   };
 
-  guard = (authHeader: string | undefined): string | JwtPayload => {
+  guard = (authHeader: string | undefined): JwtPayload => {
     const token = authHeader?.split?.(' ')?.[1];
 
     if (!authHeader || !token) {
@@ -91,5 +91,19 @@ export class AuthService {
     }
 
     return this.#tokenService.verifyToken(token);
+  };
+
+  refresh = async (body: RefreshBody): Promise<AuthResponse> => {
+    const info = this.#tokenService.verifyToken(body.refreshToken);
+    const user = await this.#userService.getUser({ email: info.email });
+
+    if (!user) {
+      throw new HttpError(403, 'Something wrong with token', 'Refresh');
+    }
+
+    return this.#tokenService.generateTokenPair(
+      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, createAt: new Date().toUTCString() }
+    );
   };
 }
