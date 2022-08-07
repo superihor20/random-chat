@@ -4,13 +4,15 @@ import { AuthController } from './modules/Auth/Auth.controller';
 import { AuthService } from './modules/Auth/Auth.service';
 import { ErrorService } from './modules/Error/Error.service';
 import { LoggerService } from './modules/Logger/Logger.service';
+import { TokenService } from './modules/Token/Token.service';
 import { UserService } from './modules/User/User.service';
 
 const runApp = (): void => {
+  const tokenService = new TokenService();
   const loggerService = new LoggerService();
   const errorService = new ErrorService(loggerService);
   const userService = new UserService();
-  const authService = new AuthService(userService);
+  const authService = new AuthService(tokenService, userService);
 
   const authController = new AuthController(authService, loggerService);
 
