@@ -37,4 +37,14 @@ export class AuthController extends RouteController {
       next(e);
     }
   };
+
+  guard = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
+    try {
+      req.user = this.#authService.guard(req.headers.authorization);
+
+      next();
+    } catch (e) {
+      next(e);
+    }
+  };
 }

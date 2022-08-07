@@ -1,21 +1,24 @@
 import bcrypt from 'bcrypt';
+import { JwtPayload } from 'jsonwebtoken';
 import { SafeParseReturnType } from 'zod';
 
 import { User } from '../../entities/User';
-import { generateAccessToken } from '../../utils/helpers/generateAccessToken';
-import { generateRefreshToken } from '../../utils/helpers/generateRefreshToken';
 import { authSchema } from '../../utils/schemas/auth.schema';
 import { AuthBody, AuthResponse } from '../../utils/types/auth';
 import { HttpError } from '../Error/HttpError.class';
+import { TokenService } from '../Token/Token.service';
 import { UserService } from '../User/User.service';
 
 export class AuthService {
   #userService: UserService;
 
+  #tokenService: TokenService;
+
   #saltRounds = 10;
 
-  constructor(userService: UserService) {
+  constructor(tokenService: TokenService, userService: UserService) {
     this.#userService = userService;
+    this.#tokenService = tokenService;
   }
 
   validateAuthBody = (body: AuthBody): SafeParseReturnType<AuthBody, AuthBody> => {
@@ -44,13 +47,11 @@ export class AuthService {
     user.password = await bcrypt.hash(body.password, this.#saltRounds);
 
     const newUser = await this.#userService.saveUser(user);
-    const accessToken = generateAccessToken({ id: newUser.id, email: newUser.email });
-    const refreshToken = await generateRefreshToken(this.#saltRounds);
 
-    return {
-      accessToken,
-      refreshToken,
-    };
+    return this.#tokenService.generateTokenPair(
+      { id: newUser.id, email: newUser.email },
+      { id: newUser.id, email: newUser.email, createAt: new Date().toUTCString() }
+    );
   };
 
   signIn = async (body: AuthBody): Promise<AuthResponse> => {
@@ -76,12 +77,19 @@ export class AuthService {
       throw new HttpError(403, 'Incorect credentials, please try again', 'Sign In');
     }
 
-    const accessToken = generateAccessToken({ id: user.id, email: user.email });
-    const refreshToken = await generateRefreshToken(this.#saltRounds);
+    return this.#tokenService.generateTokenPair(
+      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, createAt: new Date().toUTCString() }
+    );
+  };
 
-    return {
-      accessToken,
-      refreshToken,
-    };
+  guard = (authHeader: string | undefined): string | JwtPayload => {
+    const token = authHeader?.split?.(' ')?.[1];
+
+    if (!authHeader || !token) {
+      throw new HttpError(401, "You don't have access here", 'Auth');
+    }
+
+    return this.#tokenService.verifyToken(token);
   };
 }

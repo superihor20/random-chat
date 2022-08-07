@@ -26,6 +26,6 @@ export class ErrorService implements ErrorInterface {
     }
 
     this.#logger.error(`${err.message}`);
-    res.status(500).send({ err: err.message });
+    res.status(500).send({ err: err.message || 'Something went wrong' });
   };
 }
