@@ -34,11 +34,11 @@ export class TokenService {
     };
   };
 
-  verifyToken = (token: string): string | JwtPayload => {
+  verifyToken = (token: string): JwtPayload => {
     try {
-      return verify(token, this.#secret);
+      return verify(token, this.#secret) as JwtPayload;
     } catch (err) {
-      throw new HttpError(401, (err as Error).message, 'Auth');
+      throw new HttpError(403, (err as Error)?.message, 'Auth');
     }
   };
 }
