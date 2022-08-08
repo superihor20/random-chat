@@ -25,7 +25,7 @@ export class UserService {
     }
   };
 
-  getUserByOptionsSave = async (options: FindOptionsWhere<User>): Promise<User> => {
+  getUserByOptionsSafe = async (options: FindOptionsWhere<User>): Promise<User> => {
     const user = await this.getUserByOptions(options);
 
     if (!user) {
@@ -40,7 +40,7 @@ export class UserService {
   };
 
   getUserWithoutPassword = async (options: FindOptionsWhere<User>): Promise<GuardedUser> => {
-    const { password: _password, ...user } = await this.getUserByOptionsSave(options);
+    const { password: _password, ...user } = await this.getUserByOptionsSafe(options);
 
     return user;
   };
