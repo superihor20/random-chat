@@ -7,6 +7,6 @@ export const configDev = {
   dbPassword: process.env.DB_PASSWORD || '123123123',
   dbName: process.env.DB_NAME || 'chat',
   secret: process.env.SECRET || 'secret',
-  accessTokenExpiresIn: 1000 * 60 * 15, // 15 minutes
-  refreshTokenExpiresIn: 1000 * 60 * 60 * 24 * 30, // 30 days
+  accessTokenExpiresIn: 60 * 15, // 15 minutes
+  refreshTokenExpiresIn: 60 * 60 * 24 * 30, // 30 days
 };

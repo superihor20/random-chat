@@ -12,7 +12,7 @@ export class UserController extends RouteController {
     super(loggerService);
 
     this.#userService = userService;
-    this.bindRouter([{ path: '/find', method: 'get', func: this.getUser }]);
+    this.bindRouter([{ path: '/me', method: 'get', func: this.getUser }]);
   }
 
   getUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {

@@ -112,7 +112,7 @@
         }
       }
     },
-    "/user/find": {
+    "/user/me": {
       "get": {
         "tags": ["User"],
         "summary": "Get user data",
