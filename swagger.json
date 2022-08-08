@@ -2,13 +2,12 @@
   "openapi": "3.0.3",
   "info": { "title": "Chat App", "description": "Eto Chat", "version": "1.0.0" },
   "servers": [{ "url": "http://localhost:4200" }],
-  "tags": [{ "name": "Auth" }],
+  "tags": [{ "name": "Auth" }, { "name": "User" }],
   "paths": {
     "/auth/sign-up": {
       "post": {
         "tags": ["Auth"],
         "summary": "Create new user",
-        "description": "Create new user",
         "operationId": "createUser",
         "requestBody": {
           "description": "Create new user in the app",
@@ -47,7 +46,6 @@
       "get": {
         "tags": ["Auth"],
         "summary": "Sign in to the app",
-        "description": "Sign in to the app",
         "operationId": "signIn",
         "requestBody": {
           "description": "Sign in to the app",
@@ -86,7 +84,6 @@
       "post": {
         "tags": ["Auth"],
         "summary": "Refresh access token with refresh token",
-        "description": "Refresh access token with refresh token",
         "operationId": "refresh",
         "requestBody": {
           "description": "Refresh access token with refresh token",
@@ -108,6 +105,83 @@
           },
           "403": {
             "description": "Incorect Data",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          }
+        }
+      }
+    },
+    "/user/me": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user data",
+        "description": "To get user data you need to make a request with access token",
+        "operationId": "userFind",
+        "responses": {
+          "200": {
+            "description": "User data",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/UserDto" } }
+            }
+          },
+          "401": {
+            "description": "You need to provide access token",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "User not Found",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/user/update": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Update user data",
+        "operationId": "updateUser",
+        "requestBody": {
+          "description": "Send only those fields that you want to update",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdatableUserFieldsDto" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/UpdatableUserFieldsDto" }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": { "$ref": "#/components/schemas/UpdatableUserFieldsDto" }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "User's data update successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SuccessDto" }
+              }
+            }
+          },
+          "403": {
+            "description": "Incorect Data",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "Data already belongs to another user",
             "content": {
               "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
             }
@@ -137,6 +211,37 @@
           "err": { "type": "string", "example": "something went wrong" },
           "statusCode": { "type": "number", "example": 500 }
         }
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number", "example": 1 },
+          "username": { "type": "string | null", "example": "username" },
+          "email": { "type": "string", "example": "email@gmail.com" },
+          "avatar": { "type": "string | null", "example": "link to the image" },
+          "banner": { "type": "string | null", "example": "link to the image" }
+        }
+      },
+      "UpdatableUserFieldsDto": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string", "example": "username" },
+          "email": { "type": "string", "example": "email@gmail.com" },
+          "password": { "minLength": 8, "type": "string", "example": "12345678" }
+        }
+      },
+      "SuccessDto": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }
