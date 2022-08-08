@@ -23,5 +23,5 @@ export class User {
   avatar: string;
 
   @Column({ nullable: true })
-  background: string;
+  banner: string;
 }
