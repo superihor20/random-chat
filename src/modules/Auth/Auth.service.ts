@@ -3,8 +3,8 @@ import { JwtPayload } from 'jsonwebtoken';
 import { SafeParseReturnType } from 'zod';
 
 import { User } from '../../entities/User';
+import { AuthBody, AuthResponse, RefreshBody } from '../../utils/dtos/auth';
 import { authSchema } from '../../utils/schemas/auth.schema';
-import { AuthBody, AuthResponse, RefreshBody } from '../../utils/types/auth';
 import { HttpError } from '../Error/HttpError.class';
 import { TokenService } from '../Token/Token.service';
 import { UserService } from '../User/User.service';
