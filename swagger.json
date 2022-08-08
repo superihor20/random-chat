@@ -144,6 +144,50 @@
           }
         ]
       }
+    },
+    "/user/update": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Update user data",
+        "operationId": "updateUser",
+        "requestBody": {
+          "description": "Send only those fields that you want to update",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdatableUserFieldsDto" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/UpdatableUserFieldsDto" }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": { "$ref": "#/components/schemas/UpdatableUserFieldsDto" }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "User's data update successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SuccessDto" }
+              }
+            }
+          },
+          "403": {
+            "description": "Incorect Data",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "Data already belongs to another user",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -169,13 +213,27 @@
         }
       },
       "UserDto": {
-        "UserDto": "object",
+        "type": "object",
         "properties": {
           "id": { "type": "number", "example": 1 },
           "username": { "type": "string | null", "example": "username" },
           "email": { "type": "string", "example": "email@gmail.com" },
           "avatar": { "type": "string | null", "example": "link to the image" },
           "banner": { "type": "string | null", "example": "link to the image" }
+        }
+      },
+      "UpdatableUserFieldsDto": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string", "example": "username" },
+          "email": { "type": "string", "example": "email@gmail.com" },
+          "password": { "minLength": 8, "type": "string", "example": "12345678" }
+        }
+      },
+      "SuccessDto": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true }
         }
       }
     },

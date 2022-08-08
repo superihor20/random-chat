@@ -36,7 +36,7 @@ export class AuthService {
       );
     }
 
-    const isUserExist = await this.#userService.getUser({ email: body.email });
+    const isUserExist = await this.#userService.getUserByOptionsSave({ email: body.email });
 
     if (isUserExist) {
       throw new HttpError(403, 'User with this email already exist', 'Sign Up');
@@ -65,7 +65,7 @@ export class AuthService {
       );
     }
 
-    const user = await this.#userService.getUser({ email: body.email });
+    const user = await this.#userService.getUserByOptionsSave({ email: body.email });
 
     if (!user) {
       throw new HttpError(404, 'User not found', 'Sign In');
@@ -95,7 +95,7 @@ export class AuthService {
 
   refresh = async (body: RefreshBody): Promise<AuthResponse> => {
     const info = this.#tokenService.verifyToken(body.refreshToken);
-    const user = await this.#userService.getUser({ email: info.email });
+    const user = await this.#userService.getUserByOptionsSave({ email: info.email });
 
     if (!user) {
       throw new HttpError(403, 'Something wrong with token', 'Refresh');
