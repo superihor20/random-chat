@@ -21,7 +21,7 @@ export class ErrorService implements ErrorInterface {
         `${err.context ? `[${err.context}] ` : ''}Error ${err.statusCode}: ${err.message}`
       );
 
-      res.status(err.statusCode).send({ err: err.message });
+      res.status(err.statusCode).send({ err: err.message, statusCode: err.statusCode });
       return;
     }
 

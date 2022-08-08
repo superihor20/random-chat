@@ -13,10 +13,10 @@
         "requestBody": {
           "description": "Create new user in the app",
           "content": {
-            "application/json": { "schema": { "$ref": "#/components/schemas/AuthBody" } },
-            "application/xml": { "schema": { "$ref": "#/components/schemas/AuthBody" } },
+            "application/json": { "schema": { "$ref": "#/components/schemas/AuthDto" } },
+            "application/xml": { "schema": { "$ref": "#/components/schemas/AuthDto" } },
             "application/x-www-form-urlencoded": {
-              "schema": { "$ref": "#/components/schemas/AuthBody" }
+              "schema": { "$ref": "#/components/schemas/AuthDto" }
             }
           },
           "required": true
@@ -25,11 +25,21 @@
           "201": {
             "description": "User created successfully",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/AuthBody" } }
+              "application/json": { "schema": { "$ref": "#/components/schemas/AuthDto" } }
             }
           },
-          "403": { "description": "Incorect Data" },
-          "422": { "description": "User already Exist" }
+          "403": {
+            "description": "Incorect Data",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "User already Exist",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          }
         }
       }
     },
@@ -42,10 +52,10 @@
         "requestBody": {
           "description": "Sign in to the app",
           "content": {
-            "application/json": { "schema": { "$ref": "#/components/schemas/AuthBody" } },
-            "application/xml": { "schema": { "$ref": "#/components/schemas/AuthBody" } },
+            "application/json": { "schema": { "$ref": "#/components/schemas/AuthDto" } },
+            "application/xml": { "schema": { "$ref": "#/components/schemas/AuthDto" } },
             "application/x-www-form-urlencoded": {
-              "schema": { "$ref": "#/components/schemas/AuthBody" }
+              "schema": { "$ref": "#/components/schemas/AuthDto" }
             }
           },
           "required": true
@@ -54,11 +64,21 @@
           "200": {
             "description": "User signed in successfully",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/AuthBody" } }
+              "application/json": { "schema": { "$ref": "#/components/schemas/AuthDto" } }
             }
           },
-          "403": { "description": "Incorect Data" },
-          "404": { "description": "User not Found" }
+          "403": {
+            "description": "Incorect Data",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "User not Found",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          }
         }
       }
     },
@@ -71,10 +91,10 @@
         "requestBody": {
           "description": "Refresh access token with refresh token",
           "content": {
-            "application/json": { "schema": { "$ref": "#/components/schemas/RefreshBody" } },
-            "application/xml": { "schema": { "$ref": "#/components/schemas/RefreshBody" } },
+            "application/json": { "schema": { "$ref": "#/components/schemas/RefreshDto" } },
+            "application/xml": { "schema": { "$ref": "#/components/schemas/RefreshDto" } },
             "application/x-www-form-urlencoded": {
-              "schema": { "$ref": "#/components/schemas/RefreshBody" }
+              "schema": { "$ref": "#/components/schemas/RefreshDto" }
             }
           },
           "required": true
@@ -83,27 +103,39 @@
           "201": {
             "description": "New pair of tokens successfully created",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/RefreshBody" } }
+              "application/json": { "schema": { "$ref": "#/components/schemas/RefreshDto" } }
             }
           },
-          "403": { "description": "Incorect Data" }
+          "403": {
+            "description": "Incorect Data",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          }
         }
       }
     }
   },
   "components": {
     "schemas": {
-      "AuthBody": {
+      "AuthDto": {
         "type": "object",
         "properties": {
           "email": { "type": "string", "example": "email@gmail.com" },
           "password": { "minLength": 8, "type": "string", "example": "12345678" }
         }
       },
-      "RefreshBody": {
+      "RefreshDto": {
         "type": "object",
         "properties": {
           "refreshToken": { "type": "string", "example": "your jwt token" }
+        }
+      },
+      "ErrorDto": {
+        "type": "object",
+        "properties": {
+          "err": { "type": "string", "example": "something went wrong" },
+          "statusCode": { "type": "number", "example": 500 }
         }
       }
     }
