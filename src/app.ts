@@ -12,6 +12,7 @@ import { configDev } from './configs/config.dev';
 import { AuthController } from './modules/Auth/Auth.controller';
 import { ErrorService } from './modules/Error/Error.service';
 import { LoggerService } from './modules/Logger/Logger.service';
+import { UserController } from './modules/User/User.controller';
 
 config();
 
@@ -28,11 +29,14 @@ export class App {
 
   appDataSource: typeof AppDataSource;
 
+  userController: UserController;
+
   constructor(
     loggerService: LoggerService,
     errorService: ErrorService,
     appDataSource: typeof AppDataSource,
-    authController: AuthController
+    authController: AuthController,
+    userController: UserController
   ) {
     this.express = express();
     this.server = createServer(this.express);
@@ -40,6 +44,7 @@ export class App {
     this.loggerService = loggerService;
     this.authController = authController;
     this.appDataSource = appDataSource;
+    this.userController = userController;
   }
 
   #initializeDbConnection = async (): Promise<void> => {
@@ -58,6 +63,7 @@ export class App {
 
   #useRoutes = (): void => {
     this.express.use('/auth', this.authController.router);
+    this.express.use('/user', this.authController.guard, this.userController.router);
   };
 
   #useError = (): void => {

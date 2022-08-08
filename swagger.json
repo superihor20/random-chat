@@ -2,13 +2,12 @@
   "openapi": "3.0.3",
   "info": { "title": "Chat App", "description": "Eto Chat", "version": "1.0.0" },
   "servers": [{ "url": "http://localhost:4200" }],
-  "tags": [{ "name": "Auth" }],
+  "tags": [{ "name": "Auth" }, { "name": "User" }],
   "paths": {
     "/auth/sign-up": {
       "post": {
         "tags": ["Auth"],
         "summary": "Create new user",
-        "description": "Create new user",
         "operationId": "createUser",
         "requestBody": {
           "description": "Create new user in the app",
@@ -47,7 +46,6 @@
       "get": {
         "tags": ["Auth"],
         "summary": "Sign in to the app",
-        "description": "Sign in to the app",
         "operationId": "signIn",
         "requestBody": {
           "description": "Sign in to the app",
@@ -86,7 +84,6 @@
       "post": {
         "tags": ["Auth"],
         "summary": "Refresh access token with refresh token",
-        "description": "Refresh access token with refresh token",
         "operationId": "refresh",
         "requestBody": {
           "description": "Refresh access token with refresh token",
@@ -114,6 +111,39 @@
           }
         }
       }
+    },
+    "/user/find": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user data",
+        "description": "To get user data you need to make a request with access token",
+        "operationId": "userFind",
+        "responses": {
+          "200": {
+            "description": "User data",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/UserDto" } }
+            }
+          },
+          "401": {
+            "description": "You need to provide access token",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "User not Found",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -137,6 +167,23 @@
           "err": { "type": "string", "example": "something went wrong" },
           "statusCode": { "type": "number", "example": 500 }
         }
+      },
+      "UserDto": {
+        "UserDto": "object",
+        "properties": {
+          "id": { "type": "number", "example": 1 },
+          "username": { "type": "string | null", "example": "username" },
+          "email": { "type": "string", "example": "email@gmail.com" },
+          "avatar": { "type": "string | null", "example": "link to the image" },
+          "banner": { "type": "string | null", "example": "link to the image" }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

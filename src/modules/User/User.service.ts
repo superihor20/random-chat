@@ -1,3 +1,4 @@
+import { GuardedUser } from 'src/utils/dtos/user';
 import { FindOptionsWhere } from 'typeorm';
 
 import { User } from '../../entities/User';
@@ -15,7 +16,19 @@ export class UserService {
     }
   };
 
-  getUser = (options: FindOptionsWhere<User>): Promise<User | null> => {
-    return this.#userRepository.findOneBy(options);
+  getUser = async (options: FindOptionsWhere<User>): Promise<User> => {
+    const user = await this.#userRepository.findOneBy(options);
+
+    if (!user) {
+      throw new HttpError(404, 'User not found', 'Get user');
+    }
+
+    return user;
+  };
+
+  getUserWithoutPassword = async (options: FindOptionsWhere<User>): Promise<GuardedUser> => {
+    const { password: _password, ...user } = await this.getUser(options);
+
+    return user;
   };
 }
