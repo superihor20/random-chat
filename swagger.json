@@ -186,7 +186,12 @@
               "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
   },
