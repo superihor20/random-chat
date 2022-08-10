@@ -21,7 +21,7 @@ export class UserService {
     try {
       return this.#userRepository.save(user);
     } catch (e) {
-      throw new HttpError(403, "Can't save user, try again");
+      throw new HttpError(400, "Can't save user, try again");
     }
   };
 
@@ -81,7 +81,7 @@ export class UserService {
 
     if (!validationResult.success) {
       throw new HttpError(
-        403,
+        400,
         validationResult.error.issues.map((issue) => issue.message).join(', '),
         'Update User'
       );

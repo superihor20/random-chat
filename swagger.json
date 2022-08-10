@@ -27,7 +27,7 @@
               "application/json": { "schema": { "$ref": "#/components/schemas/AuthDto" } }
             }
           },
-          "403": {
+          "400": {
             "description": "Incorect Data",
             "content": {
               "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
@@ -65,7 +65,7 @@
               "application/json": { "schema": { "$ref": "#/components/schemas/AuthDto" } }
             }
           },
-          "403": {
+          "400": {
             "description": "Incorect Data",
             "content": {
               "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
@@ -174,8 +174,14 @@
               }
             }
           },
-          "403": {
+          "400": {
             "description": "Incorect Data",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "You need to provide access token",
             "content": {
               "application/json": { "schema": { "$ref": "#/components/schemas/ErrorDto" } }
             }

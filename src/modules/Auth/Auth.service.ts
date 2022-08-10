@@ -30,7 +30,7 @@ export class AuthService {
 
     if (!result.success) {
       throw new HttpError(
-        403,
+        400,
         result.error.issues.map((issue) => issue.message).join(', '),
         'Sign Up'
       );
@@ -39,7 +39,7 @@ export class AuthService {
     const isUserExist = await this.#userService.getUserByOptionsSafe({ email: body.email });
 
     if (isUserExist) {
-      throw new HttpError(403, 'User with this email already exist', 'Sign Up');
+      throw new HttpError(422, 'User with this email already exist', 'Sign Up');
     }
 
     const user = new User();
@@ -59,7 +59,7 @@ export class AuthService {
 
     if (!result.success) {
       throw new HttpError(
-        403,
+        400,
         result.error.issues.map((issue) => issue.message).join(', '),
         'Sign In'
       );
@@ -74,7 +74,7 @@ export class AuthService {
     const isPasswordCorrect = await bcrypt.compare(body.password, user.password);
 
     if (!isPasswordCorrect) {
-      throw new HttpError(403, 'Incorect credentials, please try again', 'Sign In');
+      throw new HttpError(400, 'Incorect credentials, please try again', 'Sign In');
     }
 
     return this.#tokenService.generateTokenPair(
