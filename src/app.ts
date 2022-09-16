@@ -1,6 +1,7 @@
 import { createServer, Server } from 'http';
 
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import { config } from 'dotenv';
 import express, { Express } from 'express';
 import swaggerUi from 'swagger-ui-express';
@@ -57,6 +58,7 @@ export class App {
   };
 
   #useConfiguration = (): void => {
+    this.express.use(cors());
     this.express.use(bodyParser.json());
     this.express.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   };
