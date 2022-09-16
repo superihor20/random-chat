@@ -14,7 +14,7 @@ export class AuthController extends RouteController {
     this.#authService = authService;
     this.bindRouter([
       { path: '/sign-up', method: 'post', func: this.signUp },
-      { path: '/sign-in', method: 'get', func: this.signIn },
+      { path: '/sign-in', method: 'post', func: this.signIn },
       { path: '/refresh', method: 'post', func: this.refresh },
     ]);
   }

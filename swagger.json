@@ -43,7 +43,7 @@
       }
     },
     "/auth/sign-in": {
-      "get": {
+      "post": {
         "tags": ["Auth"],
         "summary": "Sign in to the app",
         "operationId": "signIn",
