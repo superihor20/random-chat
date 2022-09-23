@@ -1,4 +1,4 @@
-import { App } from './App';
+import { App } from './app';
 import { AppDataSource } from './configs/config.db';
 import { AuthController } from './modules/Auth/Auth.controller';
 import { AuthService } from './modules/Auth/Auth.service';
