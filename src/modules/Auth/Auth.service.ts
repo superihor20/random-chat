@@ -36,7 +36,7 @@ export class AuthService {
       );
     }
 
-    const isUserExist = await this.#userService.getUserByOptionsSafe({ email: body.email });
+    const isUserExist = await this.#userService.getUserByOptions({ email: body.email });
 
     if (isUserExist) {
       throw new HttpError(403, 'User with this email already exist', 'Sign Up');
@@ -49,8 +49,8 @@ export class AuthService {
     const newUser = await this.#userService.saveUser(user);
 
     return this.#tokenService.generateTokenPair(
-      { id: newUser.id, email: newUser.email },
-      { id: newUser.id, email: newUser.email, createAt: new Date().toUTCString() }
+      { ...newUser },
+      { ...newUser, createAt: new Date().toUTCString() }
     );
   };
 
@@ -78,8 +78,8 @@ export class AuthService {
     }
 
     return this.#tokenService.generateTokenPair(
-      { id: user.id, email: user.email },
-      { id: user.id, email: user.email, createAt: new Date().toUTCString() }
+      { ...user },
+      { ...user, createAt: new Date().toUTCString() }
     );
   };
 
@@ -102,8 +102,8 @@ export class AuthService {
     }
 
     return this.#tokenService.generateTokenPair(
-      { id: user.id, email: user.email },
-      { id: user.id, email: user.email, createAt: new Date().toUTCString() }
+      { ...user },
+      { ...user, createAt: new Date().toUTCString() }
     );
   };
 }
