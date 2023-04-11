@@ -23,7 +23,7 @@
     "socket.io": "4.5.1",
     "swagger-ui-express": "^4.5.0",
     "tslog": "3.3.3",
-    "typeorm": "0.3.7",
+    "typeorm": "0.3.14",
     "zod": "3.17.10"
   },
   "devDependencies": {
